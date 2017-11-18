@@ -4,16 +4,24 @@ import (
 	"os"
 	"log"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
-	"net/http"
-	"io/ioutil"
-	"encoding/json"
 )
 
 func main()  {
 	apiToken := os.Getenv("API_TOKEN")
 	if "" == apiToken {
-		log.Print("You should expect API_TOKEN env variable")
+		log.Println("You should expect API_TOKEN env variable")
+		message, err := getData()
+		log.Println(message)
+		if nil != err {
+			log.Println(err)
+		}
 		return
+	}
+
+	debug := false
+	debugEnv := os.Getenv("DEBUG")
+	if "true" == debugEnv || "1" == debugEnv {
+		debug = true
 	}
 
 	bot, err := tgbotapi.NewBotAPI(apiToken)
@@ -21,7 +29,7 @@ func main()  {
 		log.Panic("Cannot create bot", err)
 	}
 
-	bot.Debug = true
+	bot.Debug = debug
 	var u tgbotapi.UpdateConfig = tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 	updates, err := bot.GetUpdatesChan(u)
@@ -37,31 +45,11 @@ func main()  {
 				continue
 			}
 
-			response, err := http.Get("https://api.livecoin.net/exchange/maxbid_minask")
+			message, err := getData()
+
 			if nil != err {
 				log.Print(err)
 				continue
-			}
-
-			data, err := ioutil.ReadAll(response.Body)
-			var result currencyPairs
-			var message string
-
-			{
-				err := json.Unmarshal(data, &result)
-				if nil != err {
-					log.Print(err)
-					continue
-				}
-			}
-
-			for _, v := range result.CurrencyPairs {
-				if v.Symbol == "OTN/USD" || v.Symbol == "OTN/BTC" || v.Symbol == "OTN/ETH" {
-					message += "Symbol: " + v.Symbol + "\n"
-					message += "Bid: " + v.MaxBid + "\n"
-					message += "Ask: " + v.MinAsk + "\n"
-					message += "\n"
-				}
 			}
 
 			msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
