@@ -39,23 +39,21 @@ func main()  {
 			if nil == update.Message {
 				continue
 			}
-			//log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
-			if "/rate" != update.Message.Text {
-				continue
+			switch update.Message.Text {
+			case "/rate":
+				message, err := getData()
+
+				if nil != err {
+					log.Print(err)
+					continue
+				}
+
+				msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
+				msg.ReplyToMessageID = update.Message.MessageID
+
+				bot.Send(msg)
 			}
-
-			message, err := getData()
-
-			if nil != err {
-				log.Print(err)
-				continue
-			}
-
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, message)
-			msg.ReplyToMessageID = update.Message.MessageID
-
-			bot.Send(msg)
 		}
 	}
 }

@@ -59,8 +59,8 @@ func getData() (result string, err error) {
 
 	result += fmt.Sprintf("\nBTC/USD = $%.3f", BtcUsd)
 	result += fmt.Sprintf("\nETH/USD = $%.3f", EthUsd)
-	result += fmt.Sprintf("\nOTN/BTC = $%.3f (%.4f - %.4f)", OtnBtc * BtcUsd, OtnBtcBid, OtnBtcAsk)
-	result += fmt.Sprintf("\nOTN/ETH = $%.3f (%.4f - %.4f)", OtnEth * EthUsd, OtnEthBid, OtnEthAsk)
+	result += fmt.Sprintf("\nOTN/BTC = $%.3f (%.6f - %.6f)", OtnBtc * BtcUsd, OtnBtcBid, OtnBtcAsk)
+	result += fmt.Sprintf("\nOTN/ETH = $%.3f (%.6f - %.6f)", OtnEth * EthUsd, OtnEthBid, OtnEthAsk)
 	result += fmt.Sprintf("\nOTN/USD = $%.3f", OtnUsd)
 
 	return result, nil
