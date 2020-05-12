@@ -1,8 +1,0 @@
-hash: c63f58c0a5739910e495c10ef3b164980763c0c799187d4e6ac2a95d9795d292
-updated: 2017-11-16T13:37:33.774297+03:00
-imports:
-- name: github.com/go-telegram-bot-api/telegram-bot-api
-  version: 2022d04b94f50056a09962b1ac81cdd821d20a55
-- name: github.com/technoweenie/multipartstreamer
-  version: a90a01d73ae432e2611d178c18367fbaa13e0154
-testImports: []

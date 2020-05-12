@@ -1,12 +1,12 @@
 package main
 
 import (
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"time"
-	"fmt"
 )
 
 const cacheTTL = 5 // seconds
@@ -29,7 +29,7 @@ var cacheTs int64
 
 func getData() (result string, err error) {
 	data := []byte{}
-	if time.Now().Unix() - cacheTTL < cacheTs {
+	if time.Now().Unix()-cacheTTL < cacheTs {
 		data = cacheData
 	} else {
 		response, err := http.Get("https://api.livecoin.net/exchange/maxbid_minask")
@@ -59,8 +59,8 @@ func getData() (result string, err error) {
 
 	result += fmt.Sprintf("\nBTC/USD = $%.3f", BtcUsd)
 	result += fmt.Sprintf("\nETH/USD = $%.3f", EthUsd)
-	result += fmt.Sprintf("\nOTN/BTC = $%.3f (%.6f - %.6f)", OtnBtc * BtcUsd, OtnBtcBid, OtnBtcAsk)
-	result += fmt.Sprintf("\nOTN/ETH = $%.3f (%.6f - %.6f)", OtnEth * EthUsd, OtnEthBid, OtnEthAsk)
+	result += fmt.Sprintf("\nOTN/BTC = $%.3f (%.6f - %.6f)", OtnBtc*BtcUsd, OtnBtcBid, OtnBtcAsk)
+	result += fmt.Sprintf("\nOTN/ETH = $%.3f (%.6f - %.6f)", OtnEth*EthUsd, OtnEthBid, OtnEthAsk)
 	result += fmt.Sprintf("\nOTN/USD = $%.3f", OtnUsd)
 
 	return result, nil
